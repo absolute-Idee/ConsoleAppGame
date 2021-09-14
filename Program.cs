@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,61 +8,34 @@ namespace ConsoleAppGame
     {
         static void Main(string[] args)
         {
-            var options = new List<string>();
+            var list = new List<string>();
 
-            options = args.ToList();
-            if (InputCheck(options) == true)
+            foreach (string s in args)
             {
-                Decision.Play(options);
+                list.Add(s.ToLower());
             }
-            else
-            {
-                Input();
-            }
+
+            Check(list);
         }
 
-        private static void Input()
+        private static void Check(List<string> list)
         {
-            Console.WriteLine("Input not less then 3 game options. Use comma long between elements");
-            var input = Console.ReadLine().ToLower();
-            List<string> list = input.Split(",").ToList();
-            bool check = InputCheck(list);
-            if (check == false)
+            if (list.Count % 2 == 0)
             {
-                Input();
+                Console.WriteLine("The number of options must be odd!");
+            }
+            else if (UniqueCheck(list) == false)
+            {
+                Console.WriteLine("Options are not unique!");
+            }
+            else if (list.Count < 3)
+            {
+                Console.WriteLine("Number of options must not be less then 3!");
             }
             else
             {
                 Decision.Play(list);
             }
-        }
-        private static bool InputCheck(List<string> list)
-        {
-
-            foreach (string s in list)
-            {
-                s.ToLower();
-            }
-
-            if (list.Count % 2 == 0)
-            {
-                Console.WriteLine("The number of options must be odd!\n\nInput again:");
-                list.Clear();
-                return false;
-            }
-            else if (UniqueCheck(list) == false)
-            {
-                Console.WriteLine("Options are not unique!\n\nInput again:");
-                list.Clear();
-                return false;
-            }
-            else if (list.Count < 3)
-            {
-                Console.WriteLine("Number of options must not be less then 3!\n\nInput again:");
-                list.Clear();
-                return false;
-            }
-            return true;
         }
 
         private static bool UniqueCheck(List<string> s) // will use LINQ
